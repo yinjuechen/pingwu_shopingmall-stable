@@ -1,0 +1,36 @@
+<% include ../patrials/header.ejs%>
+<div class="container mt-3">
+    <div class="row">
+        <h3 class="col-12 text-center">新用户注册</h3>
+    </div>
+    <form action="/register" method="post" class="m-auto w-lg-25 w-md-70 w-sm-100">
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input class="form-control" type="text" placeholder="用户名" , name="username">
+        </div>
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input class="form-control" type="password"  name="password">
+        </div>
+        <div class="form-group">
+            <label for="password">再次输入密码</label>
+            <input class="form-control" type="password" name="password_confirm">
+        </div>
+        <div class="form-group">
+            <label for="parentPhoneNumber">推荐人手机号码</label>
+            <input class="form-control" type="text" name="parentPhoneNumber">
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber">个人手机号码</label>
+            <input class="form-control" type="text" name="phoneNumber">
+        </div>
+        <div class="form-group">
+            <label for="address">安装地址</label>
+            <input class="form-control" type="text" name="address">
+        </div>
+        <div class="form-group">
+            <button class="form-control btn btn-primary">注册</button>
+        </div>
+    </form>
+</div>
+<% include ../patrials/footer.ejs%>

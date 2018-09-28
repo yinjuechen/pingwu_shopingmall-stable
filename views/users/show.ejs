@@ -1,0 +1,221 @@
+<% include ../patrials/header.ejs %>
+    <div class="row mt-1">
+        <div class="col-2 text-center">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">个人信息</a>
+                <a class="list-group-item list-group-item-action" id="list-children-list" data-toggle="list" href="#list-children" role="tab" aria-controls="children">下属团队</a>
+                <a class="list-group-item list-group-item-action" id="list-income-list" data-toggle="list" href="#list-income" role="tab" aria-controls="income">收入明细</a>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active mb-2" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+                    <table class="table">
+                      <tbody>
+                      <tr>
+                          <th>姓名</th>
+                          <td><%= user.username %></td>
+                      </tr>
+                      <tr>
+                          <th>手机号码</th>
+                          <td><%= user.phoneNumber %></td>
+                      </tr>
+                      <tr>
+                          <th>身份证号码</th>
+                          <td><%= user.idNumber%></td>
+                      </tr>
+                      <tr>
+                          <th>会员等级</th>
+                          <% if(user.nextLevel.length >= 16 || user.userLevel == 3) {%>
+                            <td>高级合伙人</td>
+                          <% }else if(user.nextLevel.length>=8 || user.userLevel == 2){%>
+                            <td>初级合伙人</td>
+                          <%}else {%>
+                            <td>健康使者</td>
+                          <%}%>
+                      </tr>
+                      <tr>
+                          <th>安装地址</th>
+                          <td><%= user.address %></td>
+                      </tr>
+                      <tr>
+                          <th>注册日期</th>
+                          <td><%= user.date.toLocaleString()%></td>
+                      </tr>
+                      <tr>
+                          <th>审核状态</th>
+                          <% if(user.status){%>
+                            <td>已审核</td>
+                          <% }else{ %>
+                            <td>待审核</td>
+                          <% }%>
+                      </tr>
+                      </tbody>
+                    </table>
+                    <a class="btn btn-warning" href="/users/<%= user._id%>/edit">修改个人信息</a>
+                    <a class="btn btn-danger" href="/users/<%= user._id%>/password">修改登陆密码</a>
+                </div>
+                <div class="tab-pane fade" id="list-children" role="tabpanel" aria-labelledby="list-children-list">
+                    <div id="accordion">
+                        <% user.nextLevel.forEach(function (level) { %>
+                            <div class="card">
+                                <div class="card-header" id="<%=level.phoneNumber%>">
+                                    <h6 class="mb-0">
+                                        用户名：<%= level.username%>
+                                        手机号码：<%= level.phoneNumber%>
+                                        会员等级：
+                                        <% if(level.nextLevel.length >= 16 || level.userLevel == 3) {%>
+                                        高级合伙人
+                                        <% }else if(level.nextLevel.length >= 8 || level.userLevel == 2){%>
+                                        初级合伙人
+                                        <%}else {%>
+                                        健康使者
+                                        <%}%>
+                                        注册日期：<%= level.date.toLocaleString()%>
+                                        <%if(level.nextLevel.length){%>
+                                        <button class="btn btn-link collapsed btn-info" data-toggle="collapse" data-target="#collapse<%= level.phoneNumber%>" aria-expanded="false" aria-controls="collapse<%= level.phoneNumber%>">
+                                            下属团队
+                                        </button>
+                                        <%}%>
+                                    </h6>
+                                </div>
+                                <div id="collapse<%= level.phoneNumber%>" class="collapse" aria-labelledby="<%=level.phoneNumber%>" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <!--在这里再展开第二级-->
+                                        <!--另一个卡片-->
+                                        <% level.nextLevel.forEach(function (childLevel) {%>
+                                        <div id="accordion<%=level.phoneNumber%>">
+                                            <div class="card-header" id="<%childLevel.phoneNumber%>">
+                                                <h6 class="mb-0 pl-2">
+                                                    用户名：<%= childLevel.username%>
+                                                    手机号码：<%= childLevel.phoneNumber%>
+                                                    会员等级：
+                                                    <% if(level.nextLevel.length >= 16 || level.userLevel == 3) {%>
+                                                    高级合伙人
+                                                    <% }else if(level.nextLevel.length >= 8 || level.userLevel == 2){%>
+                                                    初级合伙人
+                                                    <%}else {%>
+                                                    健康使者
+                                                    <%}%>
+                                                    注册日期：<%= childLevel.date.toLocaleString()%>
+                                                    <%if(childLevel.nextLevel.length){%>
+                                                    <button class="btn btn-link collapsed btn-info" data-toggle="collapse" data-target="#collapse<%= childLevel.phoneNumber%>" aria-expanded="false" aria-controls="collapse<%= childLevel.phoneNumber%>">
+                                                        下属团队
+                                                    </button>
+                                                    <%}%>
+                                                </h6>
+                                            </div>
+                                            <div id="collapse<%= childLevel.phoneNumber%>" class="collapse" aria-labelledby="<%childLevel.phoneNumber%>" data-parent="accordion<%=level.phoneNumber%>">
+                                                <div class="card-body pl-4">
+                                                    <!--在这里展开第三级-->
+                                                    <!--另一个卡片-->
+                                                    <% childLevel.nextLevel.forEach(function (grandChild) { %>
+                                                    <div id="accordion<%= childLevel.phoneNumber%>">
+                                                        <div class="card-header" id="<%=grandChild.phoneNumber%>">
+                                                            <h6 class="mb-0 pl-2">
+                                                                用户名：<%= grandChild.username%>
+                                                                手机号码：<%= grandChild.phoneNumber%>
+                                                                会员等级：
+                                                                <% if(level.nextLevel.length >= 16 || level.userLevel == 3) {%>
+                                                                高级合伙人
+                                                                <% }else if(level.nextLevel.length >= 8 || level.userLevel == 2){%>
+                                                                初级合伙人
+                                                                <%}else {%>
+                                                                健康使者
+                                                                <%}%>
+                                                                注册日期：<%= grandChild.date.toLocaleString()%>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                    <%})%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%})%>
+                                    </div>
+                                </div>
+                            </div>
+                        <%})%>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="list-income" role="tabpanel" aria-labelledby="list-income-list">
+                    <div class="d-inline-block">
+                        <h5>总收入：
+                            <%if(user.income == 0){%>
+                            0元
+                            <%}else {%>
+                            <%= user.income%>元
+                            <%}%>
+                        </h5>
+                        <h5>
+                            总返现：
+                            <%if(!user.withdrawal){%>
+                            0元
+                            <%}else {%>
+                            <%= user.withdrawal%>元
+                            <%}%>
+                        </h5>
+                        <h5>
+                            余额：
+                            <%if(!user.withdrawal){%>
+                            <%= user.income%>
+                            <%}else {%>
+                            <%= user.income - user.withdrawal%>元
+                            <%}%>
+                        </h5>
+                    </div>
+                    <%if(user.incomeDetails.length){%>
+                    <table class="table">
+                        <thead>
+                        <tr class="text-center">
+                            <th scope="col">姓名</th>
+                            <th scope="col">身份证号</th>
+                            <th scope="col">推荐等级</th>
+                            <th scope="col">日期</th>
+                            <th scope="col">收入金额(元)</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-center">
+                        <% user.incomeDetails.forEach(function (incomeDetail) { %>
+                        <tr>
+                            <td><%= incomeDetail.childName%></td>
+                            <td><%= incomeDetail.childIdNumber%></td>
+                            <td>
+                                <% if(incomeDetail.level == 1){ %>
+                                    一级推荐
+                                <%}else if(incomeDetail.level == 2){%>
+                                    二级推荐
+                                <%}else{%>
+                                    三级推荐
+                                <%}%>
+                            </td>
+                            <td><%= incomeDetail.createdAt.toLocaleString()%></td>
+                            <td><%= incomeDetail.amount%></td>
+                            <%})%>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <%}%>
+                    <%if(user.withdrawalDetails.length){%>
+                    <table class="table">
+                        <thead>
+                        <tr class="text-center">
+                            <th scope="col">日期</th>
+                            <th scope="col">返现金额(元)</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <% user.withdrawalDetails.forEach(function (withdrawalDetail) {%>
+                                <tr>
+                                    <td><%= withdrawalDetail.createdAt.toLocaleString()%></td>
+                                    <td><%= withdrawalDetail.amount%></td>
+                                </tr>
+                            <%})%>
+                        </tbody>
+                    </table>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+    </div>
+<% include ../patrials/footer.ejs %>

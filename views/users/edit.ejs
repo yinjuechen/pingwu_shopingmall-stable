@@ -1,0 +1,41 @@
+<% include ../patrials/header.ejs %>
+<div class="container mb-2">
+    <div class="row">
+        <h2 class="col-12 text-center mt-1 mb-2 pt-3">修改个人信息</h2>
+        <div style="width: 30%; margin: 0px auto;">
+            <form action="/users/<%= user._id%>?_method=PUT" method="POST">
+                <div class="form-group">
+                    <label for="username">用户名: </label>
+                    <input type="text" readonly class="form-control-plaintext" name="username" value="<%=user.username%>">
+                </div>
+                <div class="form-group">
+                    <label for="userPhoneNumber">手机号码: </label>
+                    <input type="text" readonly class="form-control-plaintext" name="userPhoneNumber" value="<%=user.phoneNumber%>">
+                </div>
+                <div class="form-group">
+                    <label for="idNumber">身份证号码： </label>
+                    <input type="text" class="form-control", value="<%= user.idNumber%>" name="idNumber">
+                </div>
+                <% if(currentUser.isAdmin){ %>
+                    <div class="form-group">
+                        <label for="userLevel">会员等级：</label>
+                        <select name="userLevel">
+                            <option value="1">健康使者</option>
+                            <option value="2">初级合伙人</option>
+                            <option value="3">高级合伙人</option>
+                            <option value="<%= user.userLevel%>" selected>--会员等级--</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="withdrawalDetail">返现(元)：</label>
+                        <input type="number" class="form-control", name="withdrawalDetail", min="0", step="1">
+                    </div>
+                <% }%>
+                <div class="form-group">
+                    <button class="btn btn-sm btn-primary btn-block">修改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<% include ../patrials/footer.ejs %>

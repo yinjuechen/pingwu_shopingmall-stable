@@ -1,0 +1,76 @@
+<% include ../patrials/header.ejs %>
+<div class="container mt-3">
+    <form action="/admin/<%=currentUser._id%>/user/<%=user._id%>?_method=PUT" method="post" class="m-auto w-lg-25 w-md-70 w-sm-100">
+        <div class="form-group">
+            <div class="row">
+                <h4 class="col-12 text-left">用户信息:</h4>
+            </div>
+            <div class="d-inline-block">
+                <label for="username">用户名: </label>
+                <input type="text" readonly class="form-control-plaintext" name="username" value="<%=user.username%>">
+                <label for="createdDate">注册日期：</label>
+                <input type="text" readonly class="form-control-plaintext" name="createdDate" value="<%=user.date.toLocaleString()%>">
+                <label for="phoneNumber">手机号码：</label>
+                <input type="text" readonly class="form-control-plaintext" name="phoneNumber" value="<%=user.phoneNumber%>">
+                <label for="level">会员等级：</label>
+                <% if(user.nextLevel.length >= 16 || user.userLevel == 3){%>
+                <input type="text" readonly class="form-control-plaintext" name="level" value="高级合伙人">
+                <%}else if(user.nextLevel.length >= 8 || user.userLevel == 2){ %>
+                <input type="text" readonly class="form-control-plaintext" name="level" value="初级合伙人">
+                <%}else{%>
+                <input type="text" readonly class="form-control-plaintext" name="level" value="健康使者">
+                <%}%>
+            </div>
+            <div class="d-inline-block">
+                <label for="address">安装地址：</label>
+                <input type="text" readonly class="form-control-plaintext" name="address" value="<%=user.address%>">
+                <label for="status">审核状态：</label>
+                <% if(user.status == false){ %>
+                <input type="text" readonly class="form-control-plaintext" name="status" value="未通过">
+                <%}else { %>
+                <input type="text" readonly class="form-control-plaintext" name="status" value="通过">
+                <%}%>
+            </div>
+        </div>
+        <% if(parent){ %>
+        <div class="form-group">
+            <div class="row">
+                <h4 class="col-12 text-left">推荐人信息:</h4>
+            </div>
+            <div class="d-inline-block">
+                <label for="parent_username">用户名: </label>
+                <input type="text" readonly class="form-control-plaintext" name="parent_username" value="<%=parent.username%>">
+                <label for="parent_createdDate">注册日期：</label>
+                <input type="text" readonly class="form-control-plaintext" name="parent_createdDate" value="<%=parent.date.toLocaleString()%>">
+                <label for="parent_phoneNumber">手机号码：</label>
+                <input type="text" readonly class="form-control-plaintext" name="parent_phoneNumber" value="<%=parent.phoneNumber%>">
+                <label for="parent_level">会员等级：</label>
+                <% if(parent.nextLevel.length >= 16 || parent.userLevel == 3 ){%>
+                <input type="text" readonly class="form-control-plaintext" name="parent_level" value="高级合伙人">
+                <%}else if(user.nextLevel.length >= 8 || parent.userLevel == 2){ %>
+                <input type="text" readonly class="form-control-plaintext" name=parent_"level" value="初级合伙人">
+                <%}else{%>
+                <input type="text" readonly class="form-control-plaintext" name="parent_level" value="健康使者">
+                <%}%>
+            </div>
+            <div class="d-inline-block">
+                <label for="parent_address">安装地址：</label>
+                <input type="text" readonly class="form-control-plaintext" name="parent_address" value="<%=parent.address%>">
+                <label for="parent_status">审核状态：</label>
+                <% if(parent.status == false){ %>
+                <input type="text" readonly class="form-control-plaintext" name="parent_status" value="未通过">
+                <%}else { %>
+                <input type="text" readonly class="form-control-plaintext" name="parent_status" value="通过">
+                <%}%>
+            </div>
+        </div>
+        <%}%>
+        <%if(user.status == false){%>
+        <div class="form-group">
+            <input type="submit" name="agree" value="通过" class="btn btn-sm btn-success" />
+            <input type="submit" name="decline" value="不通过" class="btn btn-sm btn-danger"/>
+        </div>
+        <%}%>
+    </form>
+</div>
+<% include ../patrials/footer.ejs %>

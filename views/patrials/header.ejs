@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>宇通商城</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="stylesheets/half-slider.css" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <!-- Font-awesome css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">电子商城</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">商品</a>
+                </li>
+                <li class="nav-item">
+                    <% if(!currentUser){%>
+                    <a class="nav-link" href="/login">会员中心</a>
+                    <%}else{%>
+                    <a class="nav-link" href="/users/<%= currentUser._id%>">会员中心</a>
+                    <%}%>
+                </li>
+                <li class="nav-item">
+                    <% if(!currentUser){%>
+                    <a class="nav-link" href="/login">个人收入明细</a>
+                    <%}else{%>
+                    <a class="nav-link" href="/users/<%= currentUser._id%>">个人收入明细</a>
+                    <%}%>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                </li>
+                <% if(!currentUser){%>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login"><i class="fa fa-sign-in" aria-hidden="true"> 登录 </i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register"><i class="fa fa-user-plus" aria-hidden="true"> 注册 </i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin"><i class="fa fa-sign-in" aria-hidden="true"> 管理员 </i></a>
+                </li>
+                <% }else{ %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users/<%= currentUser._id%>"> <%= currentUser.username %></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"> 退出 </i></a>
+                </li>
+                <%if(currentUser.isAdmin){ %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/<%=currentUser._id%>"><i class="fa fa-sign-out" aria-hidden="true"> 管理员 </i></a>
+                </li>
+                <% }%>
+                <% }%>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<% if(error && error.length > 0){ %>
+<div class="container mt-3">
+    <div class="alert alert-danger" role="alert">
+        <%= error %>
+    </div>
+</div>
+<% } %>
+<% if(success && success.length > 0){ %>
+<div class="container mt-3">
+    <div class="alert alert-success" role="alert">
+        <%= success %>
+    </div>
+    <% } %>
+</div>
